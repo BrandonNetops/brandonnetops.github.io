@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>your-handle // network notes & designs</title>
+<meta name="description" content="Network engineering cheatsheets, notes, and design merch.">
+
+<!-- Fonts: JetBrains Mono (tech accents) + Sora (body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#f4f1ea;          /* warm paper */
+    --panel:#fbfaf6;       /* card surface */
+    --ink:#1a1916;         /* near-black text */
+    --muted:#6f6a60;       /* secondary text */
+    --line:#d8d3c7;        /* hairline rules */
+    --accent:#d4501e;      /* warm rust/coral accent */
+    --maxw:980px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Sora",sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:"JetBrains Mono",monospace}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+
+  /* ---- NAV ---- */
+  header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--ink)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .logo{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:17px;letter-spacing:-.5px}
+  .logo span{color:var(--accent)}
+  .nav-links{display:flex;gap:28px;font-family:"JetBrains Mono",monospace;font-size:13px}
+  .nav-links a{color:var(--muted);transition:color .15s}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-links a.shop{color:var(--accent);font-weight:500}
+
+  /* ---- HERO ---- */
+  .hero{padding:90px 0 70px;border-bottom:1px solid var(--line)}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:24px}
+  .hero h1{font-size:clamp(34px,6.5vw,58px);line-height:1.05;letter-spacing:-1.5px;font-weight:700;max-width:780px}
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .hero p{color:var(--muted);font-size:18px;margin-top:22px;max-width:540px}
+  .hero-cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+  .btn{
+    font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:500;
+    padding:13px 22px;transition:all .15s;cursor:pointer;display:inline-block;border:1px solid var(--ink);
+  }
+  .btn-primary{background:var(--ink);color:var(--bg)}
+  .btn-primary:hover{background:var(--accent);border-color:var(--accent)}
+  .btn-ghost:hover{background:var(--ink);color:var(--bg)}
+
+  /* ---- SECTIONS ---- */
+  section{padding:64px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:30px}
+  .sec-num{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--accent)}
+  h2{font-size:28px;letter-spacing:-.6px;font-weight:600}
+
+  /* cards grid (cheatsheets / blog) */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+  .card{
+    background:var(--panel);border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:26px;transition:background .15s;
+  }
+  .card:hover{background:#fff}
+  .card .meta{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--accent);margin-bottom:14px}
+  .card h3{font-size:18px;margin-bottom:8px;font-weight:600;letter-spacing:-.3px}
+  .card p{color:var(--muted);font-size:14px}
+  .card .arrow{font-family:"JetBrains Mono",monospace;color:var(--ink);margin-top:16px;display:inline-block;opacity:0;transition:opacity .15s}
+  .card:hover .arrow{opacity:1}
+
+  /* ---- SHOP ---- */
+  .shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:22px}
+  .design{background:var(--panel);border:1px solid var(--ink)}
+  /* swap this .thumb div for an <img> of your design (see comments below) */
+  .thumb{
+    aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;
+    font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--muted);
+    background:repeating-linear-gradient(45deg,#efeadf,#efeadf 12px,#e7e1d4 12px,#e7e1d4 24px);
+    border-bottom:1px solid var(--ink);
+  }
+  .design img{width:100%;display:block;aspect-ratio:1/1;object-fit:cover;border-bottom:1px solid var(--ink)}
+  .design-body{padding:18px}
+  .design-body h3{font-size:15px;margin-bottom:14px;font-weight:600}
+  .buy-row{display:flex;gap:8px}
+  .buy{
+    flex:1;text-align:center;font-family:"JetBrains Mono",monospace;font-size:12px;
+    padding:10px 0;border:1px solid var(--ink);transition:all .15s;
+  }
+  .buy:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* ---- FOOTER ---- */
+  footer{padding:46px 0;color:var(--muted);font-size:14px}
+  footer .mono{color:var(--accent);font-weight:500}
+  .foot-links{display:flex;gap:22px;margin-top:12px;font-family:"JetBrains Mono",monospace;font-size:13px}
+  .foot-links a:hover{color:var(--ink)}
+
+  @media(max-width:560px){
+    .nav-links{gap:16px;font-size:12px}
+    .hero{padding:64px 0 50px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header>
+  <div class="wrap">
+    <nav>
+      <!-- EDIT: your site/brand name -->
+      <a class="logo" href="#">your<span>_</span>handle</a>
+      <div class="nav-links">
+        <a href="#cheatsheets">cheatsheets</a>
+        <a href="#blog">blog</a>
+        <a href="#shop" class="shop">shop</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<div class="wrap">
+  <div class="hero">
+    <div class="kicker">network engineering · notes · merch</div>
+    <!-- EDIT: your headline + tagline -->
+    <h1>Practical network notes, and gear worth <em>wearing</em>.</h1>
+    <p>Cheatsheets, configs, and field-tested notes for network engineers — plus designs you can actually buy.</p>
+    <div class="hero-cta">
+      <a href="#cheatsheets" class="btn btn-primary">Browse cheatsheets</a>
+      <a href="#shop" class="btn btn-ghost">See the designs →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CHEATSHEETS ============ -->
+<section id="cheatsheets">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Quick references</h2></div>
+    <div class="grid">
+      <!-- EDIT each card: title, blurb, and link (href) -->
+      <a class="card" href="#">
+        <div class="meta">subnetting</div>
+        <h3>IPv4 Subnetting Cheatsheet</h3>
+        <p>CIDR, masks, and host counts at a glance.</p>
+        <span class="arrow">→</span>
+      </a>
+      <a class="card" href="#">
+        <div class="meta">cisco-ios</div>
+        <h3>Cisco IOS Command Reference</h3>
+        <p>The commands you actually use, day to day.</p>
+        <span class="arrow">→</span>
+      </a>
+      <a class="card" href="#">
+        <div class="meta">bgp</div>
+        <h3>BGP Survival Guide</h3>
+        <p>States, attributes, and common gotchas.</p>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BLOG ============ -->
+<section id="blog">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Latest notes</h2></div>
+    <div class="grid">
+      <!-- EDIT each card: link to your post -->
+      <a class="card" href="#">
+        <div class="meta">2026-05-20</div>
+        <h3>Why your VLAN config keeps biting you</h3>
+        <p>A short field guide to the mistakes everyone makes.</p>
+        <span class="arrow">→</span>
+      </a>
+      <a class="card" href="#">
+        <div class="meta">2026-05-04</div>
+        <h3>Reading a traceroute like a detective</h3>
+        <p>What each hop is really telling you.</p>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHOP ============ -->
+<section id="shop">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Designs</h2></div>
+    <div class="shop-grid">
+
+      <!-- ===== ONE DESIGN BLOCK — copy/paste this whole block per design ===== -->
+      <div class="design">
+        <!-- IMAGE: replace the <div class="thumb"> line below with:
+             <img src="images/design-01.png" alt="Design name"> -->
+        <div class="thumb">design-01.png</div>
+        <div class="design-body">
+          <h3>"It's Always DNS" Tee</h3>
+          <div class="buy-row">
+            <!-- EDIT hrefs: paste the product link for each store.
+                 Delete a button if the design isn't on that store. -->
+            <a class="buy" href="REDBUBBLE_PRODUCT_URL" target="_blank" rel="noopener">Redbubble</a>
+            <a class="buy" href="AMAZON_PRODUCT_URL" target="_blank" rel="noopener">Amazon</a>
+          </div>
+        </div>
+      </div>
+      <!-- ===== END DESIGN BLOCK ===== -->
+
+      <div class="design">
+        <div class="thumb">design-02.png</div>
+        <div class="design-body">
+          <h3>"sudo make coffee" Mug</h3>
+          <div class="buy-row">
+            <a class="buy" href="REDBUBBLE_PRODUCT_URL" target="_blank" rel="noopener">Redbubble</a>
+            <a class="buy" href="AMAZON_PRODUCT_URL" target="_blank" rel="noopener">Amazon</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="design">
+        <div class="thumb">design-03.png</div>
+        <div class="design-body">
+          <h3>OSI Layers Poster</h3>
+          <div class="buy-row">
+            <a class="buy" href="REDBUBBLE_PRODUCT_URL" target="_blank" rel="noopener">Redbubble</a>
+            <a class="buy" href="AMAZON_PRODUCT_URL" target="_blank" rel="noopener">Amazon</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="mono">$ ./thanks-for-visiting</div>
+    <!-- EDIT: your store + social links -->
+    <div class="foot-links">
+      <a href="REDBUBBLE_STORE_URL" target="_blank" rel="noopener">Redbubble store</a>
+      <a href="AMAZON_STORE_URL" target="_blank" rel="noopener">Amazon store</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
